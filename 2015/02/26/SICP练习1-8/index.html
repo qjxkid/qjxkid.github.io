@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>SICP练习1.10 | 后面的胖纸冲冲冲</title>
+  <title>SICP练习1.8 | 后面的胖纸冲冲冲</title>
   <meta name="author" content="后面的胖纸冲冲冲">
   
   <meta name="description" content="Personal Blog">
@@ -13,7 +13,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="SICP练习1.10"/>
+  <meta property="og:title" content="SICP练习1.8"/>
   <meta property="og:site_name" content="后面的胖纸冲冲冲"/>
 
   
@@ -103,11 +103,11 @@ body{ -webkit-animation: bugfix infinite 1s; }
   	<div class="inner">
       <div class="padding">
     		
-          <h1>SICP练习1.10</h1>
+          <h1>SICP练习1.8</h1>
           <ul>
             <li>
               <span class="heading-span">Posted on: </span>
-              <time datetime="2015-02-22T12:28:53.000Z">2月 22 2015</time>
+              <time datetime="2015-02-26T13:20:54.000Z">2月 26 2015</time>
             </li>
             
               <li>
@@ -123,7 +123,7 @@ body{ -webkit-animation: bugfix infinite 1s; }
               <span class="heading-span">With: </span>
               
 
-                <a href="#ds-thread"><span class="ds-thread-count" data-thread-key="2015/02/22/SICP练习1-10/" data-count-type="comments"></span></a>
+                <a href="#ds-thread"><span class="ds-thread-count" data-thread-key="2015/02/26/SICP练习1-8/" data-count-type="comments"></span></a>
               
             </li>
           </ul>
@@ -141,29 +141,12 @@ body{ -webkit-animation: bugfix infinite 1s; }
       <div class="entry">
         
           <h3 id="题目">题目</h3>
-<p>下面过程计算一个称为Ackermann function(<a href="http://zh.wikipedia.org/zh/%E9%98%BF%E5%85%8B%E6%9B%BC%E5%87%BD%E6%95%B8" target="_blank" rel="external">阿克曼函數</a>)的数学函数:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">A</span> x y)</span></span></div><div class="line"> <span class="list">(<span class="title"><span class="built_in">cond</span></span> <span class="list">(<span class="list">(<span class="title"><span class="built_in">=</span></span> y<span class="number"> 0</span>)</span><span class="number"> 0</span>)</span></span></div><div class="line">   <span class="list">(<span class="list">(<span class="title"><span class="built_in">=</span></span> x<span class="number"> 0</span>)</span> <span class="list">(<span class="title"><span class="built_in">*</span></span><span class="number"> 2</span> y)</span>)</span></div><div class="line">   <span class="list">(<span class="list">(<span class="title"><span class="built_in">=</span></span> y<span class="number"> 1</span>)</span><span class="number"> 2</span>)</span></div><div class="line">   <span class="list">(<span class="title">else</span> <span class="list">(<span class="title">A</span> <span class="list">(<span class="title"><span class="built_in">-</span></span> x<span class="number"> 1</span>)</span></span></span></div><div class="line">               <span class="list">(<span class="title">A</span> x <span class="list">(<span class="title"><span class="built_in">-</span></span> y<span class="number"> 1</span>)</span>)</span>))))</div></pre></td></tr></table></figure>
-
-<p>下面个表达式的值是什么:</p>
-<pre><code><span class="list">(<span class="title">A</span> <span class="number">1</span> <span class="number">10</span>)</span>
-<span class="list">(<span class="title">A</span> <span class="number">2</span> <span class="number">4</span>)</span>
-<span class="list">(<span class="title">A</span> <span class="number">3</span> <span class="number">3</span>)</span>
-</code></pre><p>请考虑下面的过程，其中的A就是上面定义的过程</p>
-<pre><code><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">f</span> n)</span> <span class="list">(<span class="title">A</span><span class="number"> 0</span> n)</span>)</span> 
-<span class="list">(<span class="title">define</span> <span class="list">(<span class="title">g</span> n)</span> <span class="list">(<span class="title">A</span><span class="number"> 1</span> n)</span>)</span> 
-<span class="list">(<span class="title">define</span> <span class="list">(<span class="title">h</span> n)</span> <span class="list">(<span class="title">A</span><span class="number"> 2</span> n)</span>)</span> 
-<span class="list">(<span class="title">define</span> <span class="list">(<span class="title">k</span> n)</span> <span class="list">(<span class="title"><span class="built_in">*</span></span><span class="number"> 5</span> n n)</span>)</span>
-</code></pre><p>请给出过程f、g和h对给定整数值n所计算的函数的数学定义。例如，(k n)计算的是5n²。</p>
+<p>Newton’s method for cube roots is based on the fact that if y is an approximation to the cube root of x, then a better approximation is given by the value<br>(x/y² + 2y)/3<br>Use this formula to implement a cube-root procedure analogous to the square-root procedure.</p>
 <h3 id="解">解</h3>
-<h5 id="(1)">(1)</h5>
-<p>可知<code>(A 1 n) = (A 0 (A 1 n-1))</code>，当n = 1时，<code>(A 1 n) = (A 1 1) = 2</code>。<br>另一方面x=0时，返回的结果是<code>y*2</code>。<br>所以<code>(A 1 n) = (A 0 (A 1 n-1)) = 2 * (A 1 n-1) = 2 * 2 * (A 1 n-2) = ... = 2 ** n</code>。<br>所以<code>(A 1 10) = 2 ** 10 = 1024</code>。</p>
-<h5 id="(2)">(2)</h5>
-<p>结合(1)可知， <code>(A 2 4) = (A 1 (A 2 3)) = 2 ** (A 2 3)</code>。<br>所以<code>(A 2 4) = (A 1 (A 2 3)) = 2 ** (A 2 3) = 2 ** 2 ** (A 2 2) = ... = 2 ** 2 ** 2 ** 2 = 65535</code></p>
-<h5 id="(3)">(3)</h5>
-<p>结合(2)可知，<code>(A 3 3) = (A 2 (A 3 2)) = 2 ** 2 ... ** 2((A 3 2)个2)</code>，<code>(A 3 2) = 2 ** ... ** 2(((A 3 1)个2))</code>。<br>又<code>(A 3 1) = 2</code>，所以<code>(A 3 2) = 2 ** 2 = 4</code>，<code>(A 3 3) = 2 ** 2 ** 2 ** 2 = 65535</code>  </p>
-<h5 id="(4)">(4)</h5>
-<p>结合上(1)和(2)易知</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(define (f n) (A <span class="number">0</span> n)) = 2n</div><div class="line">(define (g n) (A <span class="number">1</span> n)) = <span class="number">2</span> ** n</div><div class="line">(define (h n) (A <span class="number">2</span> n)) = <span class="number">2</span> ** <span class="keyword">...</span> ** <span class="number">2</span>(n个<span class="number">2</span>，没有找到更合适的表示方法)</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">myCurt</span> x)</span></span></div><div class="line">    <span class="list">(<span class="title"><span class="built_in">if</span></span> <span class="list">(<span class="title"><span class="built_in">=</span></span><span class="number"> 0</span> x)</span><span class="number"></span></span></div><div class="line">        0</div><div class="line">        <span class="list">(<span class="title">curt-iter</span><span class="number"> 1.0</span> x)</span>))</div><div class="line"><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">curt-iter</span> guess x)</span></span></div><div class="line">    <span class="list">(<span class="title"><span class="built_in">if</span></span> <span class="list">(<span class="title">good_enough?</span> guess x)</span></span></div><div class="line">        guess</div><div class="line">        <span class="list">(<span class="title">curt-iter</span> <span class="list">(<span class="title">improve</span> guess x)</span></span></div><div class="line">          x)))</div><div class="line"><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">improve</span> guess x)</span></span></div><div class="line">    <span class="list">(<span class="title"><span class="built_in">/</span></span> <span class="list">(<span class="title"><span class="built_in">+</span></span> <span class="list">(<span class="title"><span class="built_in">/</span></span> x <span class="list">(<span class="title"><span class="built_in">*</span></span> guess guess)</span>)</span> <span class="list">(<span class="title"><span class="built_in">*</span></span><span class="number"> 2</span> guess)</span>)</span><span class="number"> 3</span>)</span>)</div><div class="line"><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">good_enough?</span> guess x)</span></span></div><div class="line">    <span class="list">(<span class="title"><span class="built_in">&lt;</span></span> <span class="list">(<span class="title">abs</span> <span class="list">(<span class="title"><span class="built_in">/</span></span> <span class="list">(<span class="title"><span class="built_in">-</span></span> <span class="list">(<span class="title">improve</span> guess x)</span> guess)</span> guess)</span>)</span><span class="number"> 0.0001</span>)</span>)</div></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="input"><span class="prompt">&gt; (myCurt 8)</span></span></div><div class="line">2.000000000012062</div><div class="line">&gt; (myCurt <span class="number">0</span>)</div><div class="line"><span class="input"><span class="prompt">0</span></span></div><div class="line">&gt; (myCurt <span class="number">1</span>)</div><div class="line"><span class="input"><span class="prompt">1.0</span></span></div><div class="line">&gt; (myCurt <span class="number">1</span>e-<span class="number">111</span>)</div><div class="line"><span class="input"><span class="prompt">1.0000000000044137e-37</span></span></div><div class="line">&gt; (myCurt <span class="number">1</span>e111)</div><div class="line"><span class="number">1.0000000027974346</span>e37</div></pre></td></tr></table></figure>
 
 
         
@@ -219,17 +202,17 @@ body{ -webkit-animation: bugfix infinite 1s; }
 <nav class="article-nav clearfix">
  
  <div class="article-prev" >
- <a href="/2015/02/23/SICP练习1-1/" title="SICP练习1.1">
+ <a href="/2015/02/26/SICP练习1-9/" title="SICP练习1.9">
   <i class="fa fa-long-arrow-left"></i>
   <span>
-  SICP练习1.1</span>
+  SICP练习1.9</span>
 </a>
 </div>
 
 
 <div class="article-next">
-<a href="/2015/02/22/test/"  title="test">
- <span>test
+<a href="/2015/02/24/SICP练习1-7/"  title="SICP练习1.7">
+ <span>SICP练习1.7
 </span>
 <i class="fa fa-long-arrow-right"></i>
 </a>
@@ -250,7 +233,7 @@ body{ -webkit-animation: bugfix infinite 1s; }
   
 
      <!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="2015/02/22/SICP练习1-10/" data-title="SICP练习1.10" data-url="http://qjxkid.github.io2015/02/22/SICP练习1-10/"></div>
+	<div class="ds-thread" data-thread-key="2015/02/26/SICP练习1-8/" data-title="SICP练习1.8" data-url="http://qjxkid.github.io2015/02/26/SICP练习1-8/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
