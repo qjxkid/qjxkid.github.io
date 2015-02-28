@@ -120,6 +120,92 @@ body{ -webkit-animation: bugfix infinite 1s; }
           <div class="icon"></div>
             
     
+      <h1 class="title transition"><a href="/2015/02/28/幂的取模运算/">幂的取模运算</a></h1>
+    
+  
+          <ul>
+            <li>
+              <span class="heading-span">Posted on: </span>
+              <time datetime="2015-02-28T06:43:42.000Z">2月 28 2015</time>
+            </li>
+            
+              <li>
+                <span class="heading-span">By: </span>
+
+                
+                  <a href="/">后面的胖纸冲冲冲</a>
+                
+
+              </li>
+            
+            <li>
+              <span class="heading-span">With: </span>
+              
+
+                <a href="/2015/02/28/幂的取模运算/#ds-thread"><span class="ds-thread-count" data-thread-key="2015/02/28/幂的取模运算/" data-count-type="comments"></span></a>
+              
+          </ul>
+        </header>
+      
+      <div class="entry">
+        
+          
+            <p>SICP中计算一个数的幂对另一个数取模的算法如下:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt; (define (expmod base <span class="built_in">exp</span> <span class="keyword">m</span>)</div><div class="line">        (cond ((= <span class="built_in">exp</span> <span class="number">0</span>) <span class="number">1</span>)</div><div class="line">          ((even? <span class="built_in">exp</span>)</div><div class="line">             (remainder (square (expmod base (/ <span class="built_in">exp</span> <span class="number">2</span>) <span class="keyword">m</span>))</div><div class="line">               <span class="keyword">m</span>))</div><div class="line">          (<span class="keyword">else</span></div><div class="line">            (remainder (* base (expmod base (- <span class="built_in">exp</span> <span class="number">1</span>) <span class="keyword">m</span>))</div><div class="line">              <span class="keyword">m</span>))))</div><div class="line">&gt; (define (square <span class="keyword">x</span>)</div><div class="line">    (* <span class="keyword">x</span> <span class="keyword">x</span>))</div></pre></td></tr></table></figure>
+
+<p>用lua写清晰一些:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">expmod</span>(<span class="title">base</span>, <span class="title">exp</span>, <span class="title">m</span>)</span></div><div class="line">    <span class="keyword">if</span> <span class="built_in">exp</span> == <span class="number">0</span> <span class="keyword">then</span></div><div class="line">        <span class="constant">return</span> <span class="number">1</span></div><div class="line">    elseif <span class="built_in">exp</span> % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">then</span></div><div class="line">        <span class="built_in">local</span> tmp = expmod(base,<span class="built_in">exp</span>/<span class="number">2</span>,m)</div><div class="line">        <span class="constant">return</span> tmp*tmp % m</div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="constant">return</span> base*expmod(base,<span class="built_in">exp</span>-<span class="number">1</span>,m) % m</div><div class="line">    <span class="function"><span class="keyword">end</span></span></div><div class="line"><span class="function"><span class="keyword">end</span></span></div></pre></td></tr></table></figure>
+
+<p>证明 a<sup>k</sup> ≡ (a<sup>(k-j)</sup> mod m) <em> (a<sup>j</sup> mod m):<br>因为:<br>a<sup>(k-j)</sup> ≡ (a<sup>(k-j)</sup> mod m) (mod m)<br>a<sup>j</sup> ≡ (a<sup>j</sup> mod m) (mod m)<br>所以:<br>a<sup>k</sup> ≡ (a<sup>(k-j)</sup> mod m) </em> (a<sup>j</sup> mod m)<br>附:<br>同余的保持基本运算:</p>
+<ul>
+<li>a≡b (mod m)</li>
+<li>c≡d (mod m)</li>
+</ul>
+<p>⇒</p>
+<ul>
+<li>(a+c) ≡ (b+d) (mod m)</li>
+<li>ac ≡bd (mod m)</li>
+</ul>
+<p>该性质可以进一步得到:</p>
+<ul>
+<li>a≡b (mod m)</li>
+</ul>
+<p>⇒</p>
+<ul>
+<li>an ≡ bn (mod m)  (n是整数)</li>
+<li>a<sup>k</sup> ≡b<sup>k</sup> (mod m)  (k是自然数)  </li>
+</ul>
+<p>证明:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">a</span> = km + <span class="keyword">n</span></div><div class="line"><span class="keyword">b</span> = <span class="keyword">tm</span> + <span class="keyword">n</span></div><div class="line"><span class="keyword">c</span> = <span class="keyword">sm</span> + <span class="keyword">r</span></div><div class="line"><span class="keyword">d</span> = qm + <span class="keyword">r</span></div><div class="line">(<span class="number">1</span>)</div><div class="line">⇒</div><div class="line">(<span class="keyword">a</span>+<span class="keyword">c</span>) = (<span class="keyword">k</span>+<span class="keyword">s</span>)<span class="keyword">m</span> + (<span class="keyword">n</span>+<span class="keyword">r</span>)</div><div class="line">(<span class="keyword">b</span>+<span class="keyword">d</span>) = (<span class="keyword">t</span>+<span class="keyword">q</span>)<span class="keyword">m</span> + (<span class="keyword">n</span>+<span class="keyword">r</span>)</div><div class="line">⇒</div><div class="line">(<span class="keyword">a</span>+<span class="keyword">c</span>) ≡ (<span class="keyword">b</span>+<span class="keyword">d</span>) (<span class="keyword">mod</span> <span class="keyword">m</span>)</div><div class="line">(<span class="number">2</span>)</div><div class="line">⇒</div><div class="line">ac = ksmm + nsm + kmr + nr = (ksm+ns+kr)<span class="keyword">m</span> + nr</div><div class="line"><span class="keyword">bd</span> = (tqm+ns+<span class="built_in">tr</span>)<span class="keyword">m</span> + nr</div><div class="line">⇒</div><div class="line">ac ≡ <span class="keyword">bd</span> (<span class="keyword">mod</span> <span class="keyword">m</span>)</div></pre></td></tr></table></figure>
+
+
+          
+        
+      </div>
+      <footer>
+        
+          <div class="alignright">
+            <a href="/2015/02/28/幂的取模运算/#more" class="more-link">Continue Reading<i class="fa fa-long-arrow-right fa-1"></i></a>
+          </div>
+        
+        <div class="clearfix"></div>
+      </footer>
+    </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  
+    <div class="post-content-index">
+  
+      
+        <header>
+          <div class="icon"></div>
+            
+    
       <h1 class="title transition"><a href="/2015/02/26/SICP练习1-9/">SICP练习1.9</a></h1>
     
   
@@ -732,89 +818,6 @@ body{ -webkit-animation: bugfix infinite 1s; }
 
 
 
-  <article class="post">
-  
-  
-    <div class="post-content-index">
-  
-      
-        <header>
-          <div class="icon"></div>
-            
-    
-      <h1 class="title transition"><a href="/2015/02/22/SICP练习1-10/">SICP练习1.10</a></h1>
-    
-  
-          <ul>
-            <li>
-              <span class="heading-span">Posted on: </span>
-              <time datetime="2015-02-22T12:28:53.000Z">2月 22 2015</time>
-            </li>
-            
-              <li>
-                <span class="heading-span">By: </span>
-
-                
-                  <a href="/">后面的胖纸冲冲冲</a>
-                
-
-              </li>
-            
-            <li>
-              <span class="heading-span">With: </span>
-              
-
-                <a href="/2015/02/22/SICP练习1-10/#ds-thread"><span class="ds-thread-count" data-thread-key="2015/02/22/SICP练习1-10/" data-count-type="comments"></span></a>
-              
-          </ul>
-        </header>
-      
-      <div class="entry">
-        
-          
-            <h3 id="题目">题目</h3>
-<p>下面过程计算一个称为Ackermann function(<a href="http://zh.wikipedia.org/zh/%E9%98%BF%E5%85%8B%E6%9B%BC%E5%87%BD%E6%95%B8" target="_blank" rel="external">阿克曼函數</a>)的数学函数:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">A</span> x y)</span></span></div><div class="line"> <span class="list">(<span class="title"><span class="built_in">cond</span></span> <span class="list">(<span class="list">(<span class="title"><span class="built_in">=</span></span> y<span class="number"> 0</span>)</span><span class="number"> 0</span>)</span></span></div><div class="line">   <span class="list">(<span class="list">(<span class="title"><span class="built_in">=</span></span> x<span class="number"> 0</span>)</span> <span class="list">(<span class="title"><span class="built_in">*</span></span><span class="number"> 2</span> y)</span>)</span></div><div class="line">   <span class="list">(<span class="list">(<span class="title"><span class="built_in">=</span></span> y<span class="number"> 1</span>)</span><span class="number"> 2</span>)</span></div><div class="line">   <span class="list">(<span class="title">else</span> <span class="list">(<span class="title">A</span> <span class="list">(<span class="title"><span class="built_in">-</span></span> x<span class="number"> 1</span>)</span></span></span></div><div class="line">               <span class="list">(<span class="title">A</span> x <span class="list">(<span class="title"><span class="built_in">-</span></span> y<span class="number"> 1</span>)</span>)</span>))))</div></pre></td></tr></table></figure>
-
-<p>下面个表达式的值是什么:</p>
-<pre><code><span class="list">(<span class="title">A</span> <span class="number">1</span> <span class="number">10</span>)</span>
-<span class="list">(<span class="title">A</span> <span class="number">2</span> <span class="number">4</span>)</span>
-<span class="list">(<span class="title">A</span> <span class="number">3</span> <span class="number">3</span>)</span>
-</code></pre><p>请考虑下面的过程，其中的A就是上面定义的过程</p>
-<pre><code><span class="list">(<span class="title">define</span> <span class="list">(<span class="title">f</span> n)</span> <span class="list">(<span class="title">A</span><span class="number"> 0</span> n)</span>)</span> 
-<span class="list">(<span class="title">define</span> <span class="list">(<span class="title">g</span> n)</span> <span class="list">(<span class="title">A</span><span class="number"> 1</span> n)</span>)</span> 
-<span class="list">(<span class="title">define</span> <span class="list">(<span class="title">h</span> n)</span> <span class="list">(<span class="title">A</span><span class="number"> 2</span> n)</span>)</span> 
-<span class="list">(<span class="title">define</span> <span class="list">(<span class="title">k</span> n)</span> <span class="list">(<span class="title"><span class="built_in">*</span></span><span class="number"> 5</span> n n)</span>)</span>
-</code></pre><p>请给出过程f、g和h对给定整数值n所计算的函数的数学定义。例如，(k n)计算的是5n²。</p>
-<h3 id="解">解</h3>
-<h5 id="(1)">(1)</h5>
-<p>可知<code>(A 1 n) = (A 0 (A 1 n-1))</code>，当n = 1时，<code>(A 1 n) = (A 1 1) = 2</code>。<br>另一方面x=0时，返回的结果是<code>y*2</code>。<br>所以<code>(A 1 n) = (A 0 (A 1 n-1)) = 2 * (A 1 n-1) = 2 * 2 * (A 1 n-2) = ... = 2 ** n</code>。<br>所以<code>(A 1 10) = 2 ** 10 = 1024</code>。</p>
-<h5 id="(2)">(2)</h5>
-<p>结合(1)可知， <code>(A 2 4) = (A 1 (A 2 3)) = 2 ** (A 2 3)</code>。<br>所以<code>(A 2 4) = (A 1 (A 2 3)) = 2 ** (A 2 3) = 2 ** 2 ** (A 2 2) = ... = 2 ** 2 ** 2 ** 2 = 65535</code></p>
-<h5 id="(3)">(3)</h5>
-<p>结合(2)可知，<code>(A 3 3) = (A 2 (A 3 2)) = 2 ** 2 ... ** 2((A 3 2)个2)</code>，<code>(A 3 2) = 2 ** ... ** 2(((A 3 1)个2))</code>。<br>又<code>(A 3 1) = 2</code>，所以<code>(A 3 2) = 2 ** 2 = 4</code>，<code>(A 3 3) = 2 ** 2 ** 2 ** 2 = 65535</code>  </p>
-<h5 id="(4)">(4)</h5>
-<p>结合上(1)和(2)易知</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(define (f n) (A <span class="number">0</span> n)) = 2n</div><div class="line">(define (g n) (A <span class="number">1</span> n)) = <span class="number">2</span> ** n</div><div class="line">(define (h n) (A <span class="number">2</span> n)) = <span class="number">2</span> ** <span class="keyword">...</span> ** <span class="number">2</span>(n个<span class="number">2</span>，没有找到更合适的表示方法)</div></pre></td></tr></table></figure>
-
-
-          
-        
-      </div>
-      <footer>
-        
-          <div class="alignright">
-            <a href="/2015/02/22/SICP练习1-10/#more" class="more-link">Continue Reading<i class="fa fa-long-arrow-right fa-1"></i></a>
-          </div>
-        
-        <div class="clearfix"></div>
-      </footer>
-    </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -838,6 +841,10 @@ body{ -webkit-animation: bugfix infinite 1s; }
   <ul class="entry">
     
       <li>
+        <a href="/2015/02/28/幂的取模运算/">幂的取模运算</a>
+      </li>
+    
+      <li>
         <a href="/2015/02/26/SICP练习1-9/">SICP练习1.9</a>
       </li>
     
@@ -853,10 +860,6 @@ body{ -webkit-animation: bugfix infinite 1s; }
         <a href="/2015/02/24/SICP练习1-6/">SICP练习1.6</a>
       </li>
     
-      <li>
-        <a href="/2015/02/23/SICP练习1-5/">SICP练习1.5</a>
-      </li>
-    
   </ul>
 </div>
 
@@ -865,11 +868,11 @@ body{ -webkit-animation: bugfix infinite 1s; }
 <div class="widget tag">
   <h3 class="title">标签</h3>
   
-    <a href="/tags/SICP/">SICP<small>10</small></a>
+    <a href="/tags/SICP/">SICP<small>11</small></a>
   
     <a href="/tags/myTest/">myTest<small>1</small></a>
   
-    <a href="/tags/算法/">算法<small>5</small></a>
+    <a href="/tags/算法/">算法<small>6</small></a>
   
 </div>
 
